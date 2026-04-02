@@ -1,0 +1,280 @@
+.mapContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: url('/ladakh-terrain.png') no-repeat center center;
+  background-size: 110% 110%;
+  z-index: 0;
+}
+
+.darkOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 15, 20, 0.5); /* Equalized uniform dimming instead of heavy vignette */
+  z-index: 1;
+  pointer-events: none;
+}
+
+.mapOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+
+.backgroundGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80vw;
+  height: 80vh;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hudHeader {
+  position: absolute;
+  top: 80px;
+  left: 3vw;
+  z-index: 10;
+  animation: fadeIn 1s ease forwards;
+  pointer-events: none;
+  /* Extremely soft, subtle shadow. No heavy black spots. */
+  background: radial-gradient(circle at left center, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.15) 50%, transparent 80%);
+  padding: 20px 60px 20px 2vw;
+}
+
+.hudTitle {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -1px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.hudSubtitle {
+  font-size: 0.95rem;
+  color: #e2e8f0; /* Premium minimalist silver for flawless high contrast */
+  text-transform: uppercase;
+  margin-top: 8px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.svgCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.interactiveLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Markers */
+.markerWrap {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.markerCore {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.markerWrap:hover .markerCore {
+  transform: scale(1.5);
+}
+
+.markerLabel {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.markerLabelDate {
+  display: block;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
+  text-align: center;
+}
+
+/* Controls */
+.controlsWrap {
+  position: absolute;
+  bottom: 30px; /* Optically aligned with the global resume button's vertical presence */
+  right: 200px; /* Tucked precisely to the left of the global button */
+  left: auto;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.btnControl {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.btnControl:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Modal Popup */
+.modalOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.modalContent {
+  background: rgba(15, 20, 35, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: #fff;
+}
+
+.modalTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.modalSubtitle {
+  font-size: 1rem;
+  color: #ff8c00;
+  margin: 0 0 20px;
+}
+
+.modalList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.95rem;
+}
+.modalList li {
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 20px;
+}
+.modalList li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #ff8c00;
+}
+
+.modalTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.modalTag {
+  background: rgba(255,255,255,0.08);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.regionLabels {
+  pointer-events: none;
+}
+
+.regionText {
+  fill: rgba(255, 255, 255, 0.04);
+  font-size: 80px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  text-anchor: middle;
+}
+
+@media (max-width: 768px) {
+  .hudTitle { font-size: 2.2rem; }
+  .controlsWrap { top: auto; bottom: 120px; right: 5vw; }
+  .modalContent { padding: 30px; }
+}
